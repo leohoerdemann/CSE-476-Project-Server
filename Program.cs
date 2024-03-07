@@ -15,8 +15,7 @@ app.UseHttpsRedirection();
 
 app.MapGet("/", () => "Hello World!");
 
-app.MapPut("/createDB", () => "Hello World!");
-
+app.MapPut("/createDB", () => "Hello World!");  // Create DB
 
 
 app.Run();
