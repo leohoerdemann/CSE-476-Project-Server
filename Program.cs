@@ -78,7 +78,7 @@ public class Program
         app.Run();
     }
 
-    public static async void InsertRecord(string user, double time)
+    public static async Task<Dictionary<string, object>> InsertRecord(string user, double time)
     {
         CollectionReference collection = db.Collection("main");
 
@@ -87,11 +87,15 @@ public class Program
             { "User", user },
             { "Time", time },
             { "Day", DateTime.Today }
-        };  
-        await collection.AddAsync(data);
+        };
+        DocumentReference document = await collection.AddAsync(data);
+
+        DocumentSnapshot snapshot = await document.GetSnapshotAsync();
+
+        return snapshot.ToDictionary();
     }
 
-    public static async void InsertRecord(string user, double time, DateTime date)
+    public static async Task<Dictionary<string, object>> InsertRecord(string user, double time, DateTime date)
     {
         CollectionReference collection = db.Collection("main");
         Dictionary<string, object> data = new Dictionary<string, object>
@@ -100,7 +104,11 @@ public class Program
             { "Time", time },
             { "Day", date }
         };
-        await collection.AddAsync(data);
+        DocumentReference document = await collection.AddAsync(data);
+
+        DocumentSnapshot snapshot = await document.GetSnapshotAsync();
+
+        return snapshot.ToDictionary();
     }
 
 
