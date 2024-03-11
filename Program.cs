@@ -84,7 +84,7 @@ public class Program
         {
             { "User", user },
             { "Time", time },
-            { "Day", DateTime.Today }
+            { "Day", DateTime.Today.ToUniversalTime() }
         };
         DocumentReference document = await collection.AddAsync(data);
 
