@@ -26,6 +26,56 @@ public class Program
 
         app.MapGet("/", () => "Hello World!");
 
+        app.MapPost("/insert/{user}/{time}", (string user, double time) =>
+        {
+            InsertRecord(user, time);
+            return "Record inserted";
+        });
+
+        app.MapPost("/insert/{user}/{time}/{date}", (string user, double time, DateTime date) =>
+        {
+            InsertRecord(user, time, date);
+            return "Record inserted";
+        });
+
+        app.MapPost("/update/{user}/{time}/{date}", (string user, double time, DateTime date) =>
+        {
+            updateRecord(user, time, date);
+            return "Record updated";
+        });
+
+        app.MapGet("/getrecords", () =>
+        {
+            return GetRecords();
+        });
+
+        app.MapGet("/getrecords/{user}", (string user) =>
+        {
+            return GetRecordsUser(user);
+        });
+
+        app.MapGet("/getrecords/{user}/{date}", (string user, DateTime date) =>
+        {
+            return GetRecordsUser(user, date);
+        });
+
+        app.MapGet("/getrecords/{date}", (DateTime date) =>
+        {
+            return GetRecordsDate(date);
+        });
+
+        app.MapDelete("/clearrecords", () =>
+        {
+            clearRecords();
+            return "Records cleared";
+        });
+
+        app.MapDelete("/clearrecords/{user}", (string user) =>
+        {
+            clearRecordsUser(user);
+            return "Records cleared";
+        });
+
 
         app.Run();
     }
@@ -34,6 +84,12 @@ public class Program
     {
         CollectionReference collection = db.Collection("main");
         await collection.AddAsync(new { User = user, Time = time, Day = DateTime.Today});
+    }
+
+    public static async void InsertRecord(string user, double time, DateTime date)
+    {
+        CollectionReference collection = db.Collection("main");
+        await collection.AddAsync(new { User = user, Time = time, Day = date});
     }
 
 
@@ -84,7 +140,7 @@ public class Program
         return list;
     }
 
-    public async void updateRecord(string user, double time, DateTime day)
+    public static async void updateRecord(string user, double time, DateTime day)
     {
         // update the record for a users time on day
         Query snapshot = db.Collection("main").WhereEqualTo("User", user).WhereEqualTo("Day", day);
@@ -96,7 +152,7 @@ public class Program
     }
 
 
-    public async void clearRecords()
+    public static async void clearRecords()
     {
         // clear all records
         QuerySnapshot snapshot = await db.Collection("main").GetSnapshotAsync();
@@ -106,7 +162,7 @@ public class Program
         }
     }
 
-    public async void clearRecordsUser(string user)
+    public static async void clearRecordsUser(string user)
     {
         // clear all records for a user
         QuerySnapshot snapshot = await db.Collection("main").WhereEqualTo("User", user).GetSnapshotAsync();
