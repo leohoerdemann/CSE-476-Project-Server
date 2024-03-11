@@ -24,12 +24,6 @@ public class Program
 
         app.MapGet("/", () => "Hello World!");
 
-        app.MapGet("/testDB", () =>
-        {
-            CollectionReference collection = db.Collection("main");
-            return "";
-        });
-
         app.MapPost("/insert/{user}/{time}", (string user, double time) =>
         {
             InsertRecord(user, time);
@@ -87,13 +81,26 @@ public class Program
     public static async void InsertRecord(string user, double time)
     {
         CollectionReference collection = db.Collection("main");
-        await collection.AddAsync(new { User = user, Time = time, Day = DateTime.Today});
+
+        Dictionary<string, object> data = new Dictionary<string, object>
+        {
+            { "User", user },
+            { "Time", time },
+            { "Day", DateTime.Today }
+        };  
+        await collection.AddAsync(data);
     }
 
     public static async void InsertRecord(string user, double time, DateTime date)
     {
         CollectionReference collection = db.Collection("main");
-        await collection.AddAsync(new { User = user, Time = time, Day = date});
+        Dictionary<string, object> data = new Dictionary<string, object>
+        {
+            { "User", user },
+            { "Time", time },
+            { "Day", date }
+        };
+        await collection.AddAsync(data);
     }
 
 
