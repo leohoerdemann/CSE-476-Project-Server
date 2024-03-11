@@ -26,14 +26,12 @@ public class Program
 
         app.MapPost("/insert/{user}/{time}", (string user, double time) =>
         {
-            InsertRecord(user, time);
-            return "Record inserted";
+            return InsertRecord(user, time);
         });
 
         app.MapPost("/insert/{user}/{time}/{date}", (string user, double time, DateTime date) =>
         {
-            InsertRecord(user, time, date);
-            return "Record inserted";
+            return InsertRecord(user, time, date);
         });
 
         app.MapPost("/update/{user}/{time}/{date}", (string user, double time, DateTime date) =>
