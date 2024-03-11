@@ -3,12 +3,10 @@ using Google.Cloud.Firestore;
 public class Program
 {
 
-    public static FirestoreDb db;
+    public static FirestoreDb db = FirestoreDb.Create("cse476-hoerdema");
 
     public static void Main(string[] args)
     {
-        db = FirestoreDb.Create("cse476-hoerdema");
-
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
@@ -25,6 +23,12 @@ public class Program
         app.UseHttpsRedirection();
 
         app.MapGet("/", () => "Hello World!");
+
+        app.MapGet("/testDB", () =>
+        {
+            CollectionReference collection = db.Collection("main");
+            return db.Client;
+        });
 
         app.MapPost("/insert/{user}/{time}", (string user, double time) =>
         {
