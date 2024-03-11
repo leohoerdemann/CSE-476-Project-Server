@@ -27,7 +27,7 @@ public class Program
         app.MapGet("/testDB", () =>
         {
             CollectionReference collection = db.Collection("main");
-            return db.Client.ToString;
+            return db.Client.ToString();
         });
 
         app.MapPost("/insert/{user}/{time}", (string user, double time) =>
